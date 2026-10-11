@@ -1,0 +1,5 @@
+{
+  "APP_ENV": "dev",
+  "SUPABASE_URL": "http://127.0.0.1:54421",
+  "SUPABASE_KEY": "sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH"
+}

@@ -1,0 +1,37 @@
+name: CI
+on:
+  push:
+  pull_request:
+
+jobs:
+  app:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
+
+  database:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Start local Supabase
+        run: supabase start -x studio,storage-api,imgproxy,vector,logflare,edge-runtime,mailpit,supavisor
+      - name: Database rules and real client
+        run: |
+          eval "$(supabase status -o env | sed 's/^/export /')"
+          flutter pub get
+          API_URL="$API_URL" node supabase/tests/rls.test.mjs
+          SUPABASE_URL="$API_URL" SUPABASE_KEY="$PUBLISHABLE_KEY" \
+            flutter test test/supabase_integration_test.dart

@@ -1,0 +1,10 @@
+raw fixes:            558
+kept after filter:    530  (dropped 28, bad accuracy 18)
+after simplify 5 m:   16
+distance truth:       4446 m
+distance raw (naive): 5414 m
+distance filtered:    4573 m
+distance simplified:  4452 m
+gain naive:           698 m
+gain smoothed:        585 m
+gain truth:           585 m
